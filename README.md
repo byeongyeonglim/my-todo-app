@@ -36,4 +36,4 @@ src/
 
 ---
 
-만든이: **Lim, Byeong Yeong** 
+만든이: **Lim Byeong Yeong** 
