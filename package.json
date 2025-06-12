@@ -1,6 +1,6 @@
 {
   "name": "todo-list",
-  "homepage": "https://byeongyeonglim.github.io/my-todo-app/",
+  "homepage": "https://byeongyeonglim.github.io/my-todo-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
