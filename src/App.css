@@ -1,3 +1,10 @@
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Pretendard', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -34,5 +41,36 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.app-container {
+  max-width: 420px;
+  margin: 48px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px 0 rgba(60,72,100,0.10);
+  padding: 32px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.app-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #6366f1;
+  margin-bottom: 24px;
+  text-align: center;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 600px) {
+  .app-container {
+    margin: 16px;
+    padding: 18px 8px 12px 8px;
+  }
+  .app-title {
+    font-size: 1.5rem;
   }
 }
