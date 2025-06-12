@@ -1,15 +1,10 @@
 # 📝 To do List (React) 
 
-귀여운 이모지와 함께하는 심플하고 트렌디한 투두리스트 앱입니다! 🚀
-
 ## ✨ 주요 기능
 - ➕ **할 일 추가** : 새로운 할 일을 입력하고 추가할 수 있어요.
 - 📋 **할 일 목록 표시** : 등록된 할 일들을 한눈에 볼 수 있어요.
 - ✅ **할 일 완료 토글** : 할 일을 클릭하면 완료/미완료 상태를 바꿀 수 있어요.
 - 🗑️ **할 일 삭제** : 필요 없는 할 일은 삭제할 수 있어요.
-
-## 🖥️ 미리보기
-![todo-list-preview](https://user-images.githubusercontent.com/placeholder/todo-list-preview.png)
 
 ## 🛠️ 사용 기술
 <p align="left">
@@ -35,11 +30,10 @@ src/
  ├── *.css          # 각 컴포넌트별 스타일
 ```
 
-## ▶️ 실행 방법
-1. Node.js와 npm이 설치되어 있어야 해요.
-2. 터미널에서 아래 명령어를 입력하세요:
-   ```bash
-   npm install
-   npm start
-   ```
-3. 브라우저에서 [http://localhost:3000](http://localhost:3000) 으로 접속!
+## ▶️ 데모 바로가기
+- 아래 링크를 클릭하면 실제로 투두리스트 앱을 체험할 수 있어요! 🌐
+- 👉 [https://byeongyeonglim.github.io/my-todo-app/]
+
+---
+
+만든이: **Lim, Byeong Yeong** 
