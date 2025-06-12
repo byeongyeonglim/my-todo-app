@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/byeongyeonglim/my-todo-app.git/static/css/main.972f82dd.css",
-    "main.js": "/byeongyeonglim/my-todo-app.git/static/js/main.3ed74008.js",
-    "index.html": "/byeongyeonglim/my-todo-app.git/index.html",
-    "main.972f82dd.css.map": "/byeongyeonglim/my-todo-app.git/static/css/main.972f82dd.css.map",
-    "main.3ed74008.js.map": "/byeongyeonglim/my-todo-app.git/static/js/main.3ed74008.js.map"
+    "main.css": "/my-todo-app/static/css/main.972f82dd.css",
+    "main.js": "/my-todo-app/static/js/main.3ed74008.js",
+    "index.html": "/my-todo-app/index.html",
+    "main.972f82dd.css.map": "/my-todo-app/static/css/main.972f82dd.css.map",
+    "main.3ed74008.js.map": "/my-todo-app/static/js/main.3ed74008.js.map"
   },
   "entrypoints": [
     "static/css/main.972f82dd.css",
