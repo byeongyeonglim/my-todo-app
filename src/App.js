@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import axios from 'axios';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
+import TodayTimeline from './TodayTimeline';
 import './App.css';
 
 dayjs.locale('ko');
 
-const API_URL = 'http://localhost:3001/todos';
+const API_URL = 'http://localhost:5000/todos';
 
 // 날짜를 yyyy-mm-dd 문자열로 반환하는 함수
 function formatDate(date) {
@@ -22,8 +20,6 @@ function formatDate(date) {
 function App() {
   // 전체 todos
   const [todos, setTodos] = useState([]);
-  // 선택된 날짜 상태 (dayjs 객체)
-  const [selectedDate, setSelectedDate] = useState(dayjs());
   // 로딩 상태
   const [loading, setLoading] = useState(false);
 
@@ -44,16 +40,18 @@ function App() {
     setLoading(false);
   };
 
-  // 선택된 날짜의 할 일만 필터링
-  const dateKey = formatDate(selectedDate);
-  const todosForDate = todos.filter((todo) => todo.date === dateKey);
+  // 오늘 날짜의 타임라인용 todos
+  const todayKey = formatDate(dayjs());
+  const todayTodos = todos.filter((todo) => todo.date === todayKey);
 
-  // 할 일 추가 함수
-  const handleAdd = async (text) => {
+  // 할 일 추가
+  const handleAdd = async (text, start, end, date) => {
     const newTodo = {
       text,
       completed: false,
-      date: dateKey,
+      date: date,
+      start, // 시작 시간
+      end,   // 종료 시간
     };
     try {
       const res = await axios.post(API_URL, newTodo);
@@ -85,62 +83,16 @@ function App() {
     }
   };
 
-  // 캘린더에 할 일 존재 dot 표시
-  const dayHasTodos = (date) => {
-    const key = formatDate(date);
-    return todos.some((todo) => todo.date === key);
-  };
-
   return (
     <div className="app-container">
-      {/* MUI DatePicker로 한국식 달력 제공 */}
-      <div className="calendar-ios-wrap">
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-          <DatePicker
-            value={selectedDate}
-            onChange={setSelectedDate}
-            format="YYYY-MM-DD"
-            slotProps={{
-              textField: {
-                variant: 'outlined',
-                size: 'small',
-                fullWidth: true,
-                sx: { background: '#f8fafc', borderRadius: 2, fontWeight: 600 },
-              },
-              day: (ownerState) => {
-                const key = formatDate(ownerState.day);
-                return {
-                  sx: {
-                    position: 'relative',
-                    '&::after': dayHasTodos(ownerState.day)
-                      ? {
-                          content: '"●"',
-                          color: '#facc15',
-                          fontSize: '1.1em',
-                          position: 'absolute',
-                          left: '50%',
-                          bottom: 4,
-                          transform: 'translateX(-50%)',
-                        }
-                      : {},
-                  },
-                };
-              },
-            }}
-            disableFuture={false}
-            showDaysOutsideCurrentMonth
-            views={['year', 'month', 'day']}
-            openTo="day"
-          />
-        </LocalizationProvider>
-      </div>
       <h1 className="app-title">To do List</h1>
       <TodoForm onAdd={handleAdd} />
       {loading ? (
-        <div style={{ textAlign: 'center', color: '#6366f1', marginTop: 20 }}>로딩 중...</div>
+        <div style={{textAlign:'center', color:'#6366f1', marginTop:20}}>로딩 중...</div>
       ) : (
-        <TodoList todos={todosForDate} onToggle={handleToggle} onDelete={handleDelete} />
+        <TodoList todos={todos} onToggle={handleToggle} onDelete={handleDelete} />
       )}
+      <TodayTimeline todos={todayTodos} />
     </div>
   );
 }
