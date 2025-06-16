@@ -1,3 +1,13 @@
 {
-  "todos": []
+  "todos": [
+    {
+      "id": "a239",
+      "text": "점심시간",
+      "completed": true,
+      "date": "2025-06-16",
+      "start": "12:00",
+      "end": "13:00",
+      "user": "Helen"
+    }
+  ]
 }

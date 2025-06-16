@@ -20,13 +20,31 @@ function formatDate(date) {
 function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [serverAvailable, setServerAvailable] = useState(true);
   const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '');
   const [inputName, setInputName] = useState('');
   const [lastUserName, setLastUserName] = useState(() => localStorage.getItem('userName') || '');
 
   useEffect(() => {
-    if (userName) fetchTodos(userName);
-  }, [userName]);
+    (async () => {
+      try {
+        await axios.get(API_URL + '?_limit=1');
+        setServerAvailable(true);
+      } catch {
+        setServerAvailable(false);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!userName) return;
+    if (serverAvailable) {
+      fetchTodos(userName);
+    } else {
+      const local = JSON.parse(localStorage.getItem('todos') || '[]');
+      setTodos(local.filter(t => t.user === userName));
+    }
+  }, [userName, serverAvailable]);
 
   // 이름별 할 일만 불러오기
   const fetchTodos = async (name) => {
@@ -34,8 +52,8 @@ function App() {
     try {
       const res = await axios.get(`${API_URL}?user=${encodeURIComponent(name)}`);
       setTodos(res.data);
-    } catch (e) {
-      alert('서버에서 데이터를 불러오지 못했습니다.');
+    } catch {
+      setServerAvailable(false);
     }
     setLoading(false);
   };
@@ -45,38 +63,57 @@ function App() {
 
   const handleAdd = async (text, start, end, date) => {
     const newTodo = {
+      id: Date.now().toString(),
       text,
       completed: false,
-      date: date,
+      date,
       start,
       end,
       user: userName,
     };
-    try {
-      const res = await axios.post(API_URL, newTodo);
-      setTodos([...todos, res.data]);
-    } catch (e) {
-      alert('할 일 추가에 실패했습니다.');
+    if (serverAvailable) {
+      try {
+        const res = await axios.post(API_URL, newTodo);
+        setTodos([...todos, res.data]);
+      } catch {
+        setServerAvailable(false);
+      }
+    } else {
+      const updated = [...todos, newTodo];
+      setTodos(updated);
+      localStorage.setItem('todos', JSON.stringify(updated));
     }
   };
 
   const handleToggle = async (id) => {
-    const todo = todos.find((t) => t.id === id);
-    if (!todo) return;
-    try {
-      const res = await axios.patch(`${API_URL}/${id}`, { completed: !todo.completed });
-      setTodos(todos.map((t) => (t.id === id ? { ...t, completed: res.data.completed } : t)));
-    } catch (e) {
-      alert('상태 변경에 실패했습니다.');
+    if (serverAvailable) {
+      const todo = todos.find((t) => t.id === id);
+      if (!todo) return;
+      try {
+        const res = await axios.patch(`${API_URL}/${id}`, { completed: !todo.completed });
+        setTodos(todos.map((t) => (t.id === id ? { ...t, completed: res.data.completed } : t)));
+      } catch {
+        setServerAvailable(false);
+      }
+    } else {
+      const updated = todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+      setTodos(updated);
+      localStorage.setItem('todos', JSON.stringify(updated));
     }
   };
 
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${API_URL}/${id}`);
-      setTodos(todos.filter((t) => t.id !== id));
-    } catch (e) {
-      alert('삭제에 실패했습니다.');
+    if (serverAvailable) {
+      try {
+        await axios.delete(`${API_URL}/${id}`);
+        setTodos(todos.filter((t) => t.id !== id));
+      } catch {
+        setServerAvailable(false);
+      }
+    } else {
+      const updated = todos.filter((t) => t.id !== id);
+      setTodos(updated);
+      localStorage.setItem('todos', JSON.stringify(updated));
     }
   };
 
