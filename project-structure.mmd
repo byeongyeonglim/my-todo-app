@@ -1,0 +1,23 @@
+---
+id: todo-list-structure
+---
+```mermaid
+flowchart TD
+  A[사용자] -->|할 일 추가| B[TodoForm]
+  B -->|새 todo 생성| C[App State]
+  C -->|todos 전달| D[TodoList]
+  D -->|각 todo 렌더| E[TodoItem]
+  C -->|오늘의 todo 전달| F[TodayTimeline]
+  F -->|시간대별 시각화| G[Timeline Bar Chart]
+  C <-->|CRUD| H[(json-server)]
+  H <-->|db.json| I[(로컬 DB)]
+
+  style G fill:#6366f1,color:#fff
+  style H fill:#f59e42,color:#fff
+```
+
+- **TodoForm**: 할 일/날짜/시간 입력
+- **App State**: 전체 todo 상태 관리
+- **TodoList/TodoItem**: 할 일 목록 및 개별 항목 표시
+- **TodayTimeline**: 오늘 할 일 시간대별 시각화
+- **json-server**: db.json 기반 CRUD API

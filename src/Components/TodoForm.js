@@ -4,7 +4,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import './TodoForm.css';
 
 dayjs.locale('ko');
 
@@ -59,7 +58,7 @@ function TodoForm({ onAdd }) {
                 sx: { background: '#f1f5f9', borderRadius: 2, minWidth: 90 },
               },
             }}
-            label="시작"
+            label="시작 시간"
           />
           <span className="time-sep">~</span>
           <TimePicker
@@ -74,7 +73,7 @@ function TodoForm({ onAdd }) {
                 sx: { background: '#f1f5f9', borderRadius: 2, minWidth: 90 },
               },
             }}
-            label="종료"
+            label="종료 시간"
           />
         </div>
         <div className="todo-form-row">

@@ -1,7 +1,6 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import './TodayTimeline.css';
 
 const MySwal = withReactContent(Swal);
 const COLORS = [
@@ -14,18 +13,14 @@ const COLORS = [
   '#f43f5e', // 빨강
   '#eab308', // 노랑
 ];
-// 하루 24시간 기준, 시간 눈금 표시용
-const HOURS = Array.from({ length: 9 }, (_, i) => i * 3);
+const HOURS = Array.from({ length: 25 }, (_, i) => i); // 0~24시까지 1시간 단위
 
 function timeToPercent(time) {
-  // time: 'HH:mm' → 0~24 기준 백분율
   const [h, m] = time.split(':').map(Number);
   return ((h + m / 60) / 24) * 100;
 }
 
-// 겹치는 일정은 아래로 쌓이도록 라인 할당
 function assignTimelineRows(todos) {
-  // 각 라인별 마지막 종료시간 저장
   const rows = [];
   const sorted = [...todos].sort((a, b) => a.start.localeCompare(b.start));
   return sorted.map(todo => {
@@ -61,8 +56,6 @@ function showTodoModal(todo) {
 
 function TodayTimeline({ todos }) {
   if (!todos.length) return null;
-
-  // 오늘 날짜만 필터링 (YYYY-MM-DD)
   const today = new Date().toISOString().slice(0, 10);
   const todayTodos = todos.filter(todo => todo.date === today);
   if (!todayTodos.length) return null;
@@ -74,8 +67,15 @@ function TodayTimeline({ todos }) {
       <h2 className="timeline-title">오늘의 타임라인</h2>
       <div className="timeline-hours">
         {HOURS.map(h => (
-          <div key={h} className="timeline-hour" style={{ left: `${(h/24)*100}%` }}>
-            {h === 0 ? '00' : h.toString().padStart(2, '0')}
+          <div
+            key={h}
+            className="timeline-hour"
+            data-hour={h}
+            style={{
+              '--hour': h,
+            }}
+          >
+            {h.toString().padStart(2, '0')}
           </div>
         ))}
       </div>
@@ -83,7 +83,7 @@ function TodayTimeline({ todos }) {
         {todosWithRow.map((todo, idx) => {
           const left = timeToPercent(todo.start);
           const right = timeToPercent(todo.end);
-          const width = Math.max(right - left, 2); // 최소 2% 보장
+          const width = Math.max(right - left, 2);
           const color = COLORS[idx % COLORS.length];
           return (
             <div

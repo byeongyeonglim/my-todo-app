@@ -104,7 +104,6 @@ body::-webkit-scrollbar {
   color: #64748b;
   border: 1.5px solid #a5b4fc;
 }
-/* 타임라인 바 안의 시간대와 텍스트 구분 */
 .timeline-bar span:first-child {
   font-size: 0.97em;
   font-weight: 600;
@@ -118,76 +117,55 @@ body::-webkit-scrollbar {
   flex: 1;
   color: inherit;
 }
-.timeline-empty {
-  color: #a5b4fc;
-  text-align: center;
-  padding: 18px 0 8px 0;
-  font-size: 1.05rem;
-}
-/* react-calendar-timeline 최소 필수 스타일 */
-.rct-timeline {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px 0 rgba(60,72,100,0.06);
-  font-size: 1rem;
-}
-.rct-header-root, .rct-sidebar {
-  background: #f8fafc;
-}
-.rct-calendar-header {
-  border-bottom: 1px solid #e0e7ff;
-}
-.rct-items .rct-item {
-  border-radius: 6px;
-  font-size: 0.95rem;
-  background: #6366f1;
-  color: #fff;
-  border: none;
-  box-shadow: none;
-}
-.rct-items .rct-item.completed {
-  background: #e0e7ff;
-  color: #a5b4fc;
-  text-decoration: line-through;
-}
-.rct-horizontal-lines .rct-hl-even {
-  background: #f8fafc;
-}
-.rct-horizontal-lines .rct-hl-odd {
-  background: #fff;
-}
-.rct-vertical-lines .rct-vl {
-  background: #e0e7ff;
-}
-.rct-dateHeader {
-  color: #6366f1;
-  font-weight: 600;
-}
-.custom-timeline {
-  position: relative;
-  padding-top: 18px;
-  padding-bottom: 18px;
+.timeline-bar-check {
+  margin-left: 8px;
+  font-size: 1.1em;
+  color: #22c55e;
 }
 .timeline-hours {
   position: relative;
-  height: 18px;
+  height: 24px;
   width: 100%;
   margin-bottom: 8px;
 }
+/* 1시간 단위로 눈금 표시 */
 .timeline-hour {
   position: absolute;
   top: 0;
-  transform: translateX(-50%);
+  left: 0;
+  transform: translateX(-1px);
   font-size: 0.95rem;
-  color: #64748b;
-  font-weight: 500;
+  color: #334155;
+  font-weight: 600;
   z-index: 2;
   pointer-events: none;
+  border-left: 1px solid #cbd5e1;
+  height: 24px;
+  padding-left: 2px;
+  padding-right: 2px;
+  background: #f8fafc;
+  text-shadow: 0 1px 0 #fff;
+}
+.timeline-hour[data-hour="0"] {
+  border-left: none;
+  transform: none;
+}
+.timeline-hour {
+  left: unset;
+}
+.timeline-hour {
+  left: calc(var(--hour) * (100% / 24));
 }
 .timeline-bar-bg {
   position: relative;
   width: 100%;
-  background: linear-gradient(90deg, #f1f5f9 90%, #e0e7ef 100%);
+  background: repeating-linear-gradient(
+    to right,
+    #f1f5f9 0px,
+    #f1f5f9 calc(100%/24 - 1px),
+    #e0e7ef calc(100%/24 - 1px),
+    #e0e7ef calc(100%/24)
+  );
   border-radius: 10px;
   overflow: visible;
   box-shadow: 0 1px 4px 0 rgba(60,72,100,0.06);
@@ -204,19 +182,22 @@ body::-webkit-scrollbar {
   padding: 0 12px;
   font-size: 1rem;
   font-weight: 500;
-  box-shadow: 0 2px 8px 0 rgba(60,72,100,0.10);
+  box-shadow: 0 4px 16px 0 rgba(60,72,100,0.10);
   transition: background 0.2s, color 0.2s, border 0.2s, top 0.2s;
   overflow: hidden;
   min-width: 48px;
   max-width: 100%;
   white-space: nowrap;
-  border: 2.5px solid transparent;
+  border: 2.5px solid #fff;
+  outline: 2px solid #cbd5e1;
+  outline-offset: -2px;
 }
 .timeline-bar-custom.completed {
   background: #f3f4f6 !important;
   color: #64748b !important;
   border-style: solid;
   opacity: 0.7;
+  outline: 2px solid #a5b4fc;
 }
 .timeline-bar-custom.completed .timeline-bar-check {
   color: #22c55e;
@@ -233,29 +214,12 @@ body::-webkit-scrollbar {
   text-overflow: ellipsis;
   color: inherit;
 }
-.timeline-bar-check {
-  margin-left: 8px;
-  font-size: 1.1em;
-  color: #22c55e;
-}
+
 @media (max-width: 600px) {
-  .timeline-hour-block {
-    min-width: 32px;
-    flex-basis: 32px;
-  }
-  .timeline-bar {
-    font-size: 0.8rem;
-    padding: 1px 2px;
-  }
   .timeline-bar-bg { height: 56px; }
   .timeline-bar-custom { height: 44px; font-size: 0.97rem; }
 }
-@media (max-width: 900px) {
-  .timeline-container {
-    max-height: 220px;
-    padding: 10px 4px 6px 4px;
-  }
-}
+
 .swal2-todo-modal {
   border-radius: 16px !important;
   box-shadow: 0 4px 24px 0 rgba(60,72,100,0.13) !important;

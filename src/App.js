@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import axios from 'axios';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
-import TodayTimeline from './TodayTimeline';
+import TodoForm from './Components/TodoForm';
+import TodoList from './Components/TodoList';
+import TodayTimeline from './Components/TodayTimeline';
 import './App.css';
 
 dayjs.locale('ko');
@@ -18,21 +18,21 @@ function formatDate(date) {
 }
 
 function App() {
-  // 전체 todos
   const [todos, setTodos] = useState([]);
-  // 로딩 상태
   const [loading, setLoading] = useState(false);
+  const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '');
+  const [inputName, setInputName] = useState('');
+  const [lastUserName, setLastUserName] = useState(() => localStorage.getItem('userName') || '');
 
-  // 서버에서 전체 todos 불러오기
   useEffect(() => {
-    fetchTodos();
-  }, []);
+    if (userName) fetchTodos(userName);
+  }, [userName]);
 
-  // todos를 서버에서 가져오는 함수
-  const fetchTodos = async () => {
+  // 이름별 할 일만 불러오기
+  const fetchTodos = async (name) => {
     setLoading(true);
     try {
-      const res = await axios.get(API_URL);
+      const res = await axios.get(`${API_URL}?user=${encodeURIComponent(name)}`);
       setTodos(res.data);
     } catch (e) {
       alert('서버에서 데이터를 불러오지 못했습니다.');
@@ -40,18 +40,17 @@ function App() {
     setLoading(false);
   };
 
-  // 오늘 날짜의 타임라인용 todos
   const todayKey = formatDate(dayjs());
   const todayTodos = todos.filter((todo) => todo.date === todayKey);
 
-  // 할 일 추가
   const handleAdd = async (text, start, end, date) => {
     const newTodo = {
       text,
       completed: false,
       date: date,
-      start, // 시작 시간
-      end,   // 종료 시간
+      start,
+      end,
+      user: userName,
     };
     try {
       const res = await axios.post(API_URL, newTodo);
@@ -61,7 +60,6 @@ function App() {
     }
   };
 
-  // 할 일 완료 상태 토글 함수
   const handleToggle = async (id) => {
     const todo = todos.find((t) => t.id === id);
     if (!todo) return;
@@ -73,7 +71,6 @@ function App() {
     }
   };
 
-  // 할 일 삭제 함수
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${API_URL}/${id}`);
@@ -83,9 +80,57 @@ function App() {
     }
   };
 
+  const handleNameSubmit = (e) => {
+    e.preventDefault();
+    if (inputName.trim()) {
+      setUserName(inputName.trim());
+      setLastUserName(inputName.trim());
+      localStorage.setItem('userName', inputName.trim());
+    }
+  };
+
+  const handleResetName = () => {
+    setUserName('');
+    setInputName('');
+    localStorage.removeItem('userName');
+    setTodos([]);
+  };
+
+  // 이름이 입력되지 않은 경우 이름 입력 폼 표시
+  if (!userName) {
+    return (
+      <div className="app-container" style={{justifyContent:'center', minHeight:'60vh'}}>
+        <form onSubmit={handleNameSubmit} style={{display:'flex', flexDirection:'column', alignItems:'center', gap:20, width:'100%'}}>
+          <div style={{fontSize:'2.5rem'}}>📝</div>
+          <label htmlFor="username" style={{fontSize:'1.4rem', color:'#6366f1', fontWeight:700, marginBottom:4}}>
+            오늘의 할 일, 누구의 리스트로 만들어볼까요?
+          </label>
+          <div style={{color:'#64748b', fontSize:'1rem', marginBottom:8}}>
+            이름을 알려주시면 맞춤 리스트를 만들어드릴게요
+          </div>
+          <input
+            id="username"
+            type="text"
+            value={inputName}
+            onChange={e => setInputName(e.target.value)}
+            placeholder="이름을 입력해 주세요 (예: 홍길동)"
+            style={{fontSize:'1.2rem', padding:'12px 18px', borderRadius:8, border:'1.5px solid #c7d2fe', width:'100%', maxWidth:320, outline:'none'}}
+            autoFocus
+          />
+          <button type="submit" style={{marginTop:8, padding:'10px 32px', borderRadius:8, background:'linear-gradient(90deg,#6366f1 60%,#60a5fa 100%)', color:'#fff', fontWeight:600, fontSize:'1.1rem', border:'none', cursor:'pointer'}}>
+            내 리스트 만들기
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // 이름이 입력된 경우 할 일 목록 및 타임라인 표시
   return (
     <div className="app-container">
-      <h1 className="app-title">To do List</h1>
+      <h1 className="app-title">{userName}'s To do List'
+        <button onClick={handleResetName} style={{marginLeft:12, fontSize:'0.9rem', color:'#6366f1', background:'none', border:'none', cursor:'pointer', textDecoration:'underline'}}>이름 다시 입력</button>
+      </h1>
       <TodoForm onAdd={handleAdd} />
       {loading ? (
         <div style={{textAlign:'center', color:'#6366f1', marginTop:20}}>로딩 중...</div>

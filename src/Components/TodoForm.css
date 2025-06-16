@@ -1,0 +1,137 @@
+.todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 rgba(60,72,100,0.06);
+  padding: 16px 14px 14px 14px;
+  width: 100%;
+  min-width: 0;
+}
+
+.todo-form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0;
+  /* 모든 row가 부모의 100%를 차지하도록 */
+  box-sizing: border-box;
+}
+
+.todo-form-row > * {
+  min-width: 0;
+}
+
+.todo-form-row input.todo-input {
+  flex: 2;
+}
+
+.todo-form-row button.todo-btn {
+  flex: none;
+  min-width: 70px;
+  max-width: 120px;
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(60,72,100,0.06);
+}
+
+.todo-form-row button.todo-btn:hover {
+  background: linear-gradient(90deg, #4f46e5 60%, #2563eb 100%);
+}
+
+.todo-date-input {
+  width: 130px;
+  height: 44px;
+  padding: 0 10px;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: #f1f5f9;
+  transition: border 0.2s, background 0.2s;
+  color: #334155;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.todo-date-input:focus {
+  border-color: #6366f1;
+  background: #fff;
+}
+
+.todo-input {
+  flex: 2;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: #f1f5f9;
+  transition: border 0.2s, background 0.2s;
+  color: #334155;
+}
+
+.todo-time-input {
+  width: 90px;
+  min-width: 70px;
+  max-width: 110px;
+  height: 44px;
+  padding: 0 10px;
+  border: 1.5px solid #c7d2fe;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background: #f1f5f9;
+  transition: border 0.2s, background 0.2s;
+  color: #334155;
+  box-shadow: none;
+  margin-left: 2px;
+  margin-right: 2px;
+  appearance: none;
+  -webkit-appearance: none;
+  vertical-align: middle;
+  min-width: 0;
+  border-left: none;
+  border-right: none;
+  border-top: 1.5px solid #c7d2fe;
+  border-bottom: 1.5px solid #c7d2fe;
+  display: flex;
+  align-items: center;
+}
+.todo-time-input:focus {
+  border-color: #6366f1;
+  background: #fff;
+}
+.todo-time-input::-webkit-inner-spin-button,
+.todo-time-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.todo-form-row .MuiInputBase-root {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+.todo-form-row .MuiInputBase-root input {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+.todo-form-row .MuiFormControl-root {
+  flex: 2;
+  min-width: 0;
+  width: 100%;
+}
