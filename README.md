@@ -11,17 +11,6 @@
 - 🗄️ **json-server** (로컬/네트워크 DB, 데이터 영속성)
 - 🎨 **styled CSS** (모듈별 분리, 반응형)
 
-## 🚀 배포 및 접속 방법
-
-1. **빌드**
-   ```
-   npm run build
-   ```
-2. **gh-pages 등으로 배포**
-   - `github-pages-guide.txt` 참고
-   - 배포 후 주소 예시:  
-     `https://<github-username>.github.io/<repo-name>/`
-   - 브라우저에서 위 주소로 접속
 
 ## 주요 기능 및 구조
 
@@ -30,6 +19,6 @@
 - json-server 연동으로 멀티 디바이스 지원
 - 반응형, 미니멀/트렌디 UI
 
----
-
-자세한 개발/배포 방법은 기존 CRA 문서를 참고하세요.
+## 🚀 서비스 이용 방법
+ - 아래 URL에 접속하여 오늘의 할 일 목록 관리!
+[https://byeongyeonglim.github.io/my-todo-app/]
